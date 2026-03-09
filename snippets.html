@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snippets</title>
+  <link rel="stylesheet" href="snippets.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar nav -->
+    <aside class="nav">
+      <div class="nav-logo">
+        <div class="logo-icon">S</div>
+        <span>Snippets</span>
+      </div>
+      <div class="nav-search">
+        <input id="search" type="text" placeholder="Search…" />
+      </div>
+      <div id="chat-list" class="chat-list"></div>
+
+      <div class="nav-export-group">
+        <button id="export-json-btn">JSON</button>
+        <button id="export-md-btn">Markdown</button>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <div class="nav-footer">
+        <button class="nav-footer-btn" id="settings-nav-btn">
+          <span class="nav-footer-icon">⚙</span>
+          Settings
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main content: snippets view -->
+    <main class="main" id="view-snippets">
+      <div class="main-header">
+        <div>
+          <h1 id="main-title">All Snippets</h1>
+          <p id="main-subtitle" class="subtitle"></p>
+        </div>
+      </div>
+      <div id="snippets-container"></div>
+    </main>
+
+    <!-- Settings view (hidden by default) -->
+    <main class="main hidden" id="view-settings">
+      <div class="main-header">
+        <div>
+          <h1>Settings</h1>
+          <p class="subtitle">Manage where Snippet Capture is active</p>
+        </div>
+      </div>
+      <div class="settings-view">
+        <div class="settings-section">
+          <div class="settings-section-title">Active Sites</div>
+          <div id="sites-list"></div>
+          <div class="add-site-row">
+            <input id="new-site-input" type="text" placeholder="e.g. gemini.google.com" />
+            <button class="btn-add" id="add-site-btn">Add Site</button>
+          </div>
+          <div class="settings-error" id="site-error"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Note edit modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h2>Notes</h2>
+      <div id="modal-snippet-preview" class="modal-preview"></div>
+      <textarea id="modal-notes" placeholder="Add your notes here…" rows="5"></textarea>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn-secondary">Cancel</button>
+        <button id="modal-save" class="btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="snippets.js"></script>
+</body>
+</html>

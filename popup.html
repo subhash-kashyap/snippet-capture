@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snippet Capture</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 240px;
+      font-family: system-ui, sans-serif;
+      background: #fff;
+      color: #18181b;
+    }
+
+    body { background: #F9F7F4; color: #1A1917; font-family: -apple-system, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+    .header {
+      background: #F0EAE0;
+      border-bottom: 1px solid #E5DDD3;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .header-icon {
+      width: 24px;
+      height: 24px;
+      background: #D97757;
+      color: #fff;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .header h1 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1A1917;
+      letter-spacing: -0.01em;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #A89F99;
+      margin-top: 1px;
+    }
+
+    .body {
+      padding: 12px 14px 14px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: #ffffff;
+      border: 1px solid #E5DDD3;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .stat-count {
+      font-size: 22px;
+      font-weight: 700;
+      color: #D97757;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #75706B;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      background: #D97757;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: #C86A47; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-icon">S</div>
+    <div>
+      <h1>Snippet Capture</h1>
+      <p>Select text to save</p>
+    </div>
+  </div>
+  <div class="body">
+    <div class="stat">
+      <div class="stat-count" id="count">0</div>
+      <div class="stat-label">snippets saved</div>
+    </div>
+    <button class="btn" id="open-page">View All Snippets ↗</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
