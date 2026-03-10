@@ -5,7 +5,6 @@
   let activeFilter = null; // null = all, string = url
   let searchQuery = "";
   let editingId = null;
-  let currentView = "snippets"; // "snippets" | "settings"
 
   // ── Storage ────────────────────────────────────────────────────────────────
   function load(cb) {
@@ -26,28 +25,83 @@
     load((snippets) => {
       allSnippets = snippets;
       renderNav();
-      if (currentView === "snippets") renderMain();
+      renderMain();
     });
   }
 
-  // ── View toggle ────────────────────────────────────────────────────────────
-  function showView(view) {
-    currentView = view;
-    document.getElementById("view-snippets").classList.toggle("hidden", view !== "snippets");
-    document.getElementById("view-settings").classList.toggle("hidden", view !== "settings");
-    document.getElementById("settings-nav-btn").classList.toggle("active", view === "settings");
-    if (view === "settings") renderSettings();
-    if (view === "snippets") renderMain();
+  // ── Settings panel (inline in sidebar) ────────────────────────────────────
+  const settingsBtn = document.getElementById("settings-nav-btn");
+  const settingsPanel = document.getElementById("settings-panel");
+
+  settingsBtn.addEventListener("click", () => {
+    const isOpen = !settingsPanel.classList.contains("hidden");
+    settingsPanel.classList.toggle("hidden", isOpen);
+    settingsBtn.classList.toggle("active", !isOpen);
+    if (!isOpen) renderSettings();
+  });
+
+  function renderSettings() {
+    load((_, userSites) => {
+      const list = document.getElementById("sites-list");
+      const allSites = [
+        ...DEFAULT_SITES.map((s) => ({ name: s, isDefault: true })),
+        ...userSites.map((s) => ({ name: s, isDefault: false })),
+      ];
+      list.innerHTML = allSites.map((site) => `
+        <div class="site-row">
+          <span class="site-row-name">${escHtml(site.name)}</span>
+          ${site.isDefault
+            ? `<span class="site-badge">built-in</span>`
+            : `<button class="site-delete-btn" data-site="${escHtml(site.name)}">✕</button>`
+          }
+        </div>
+      `).join("");
+      list.querySelectorAll("[data-site]").forEach((btn) => {
+        btn.addEventListener("click", () => removeSite(btn.dataset.site));
+      });
+    });
   }
 
-  document.getElementById("settings-nav-btn").addEventListener("click", () => {
-    showView(currentView === "settings" ? "snippets" : "settings");
+  function addSite() {
+    const input = document.getElementById("new-site-input");
+    const error = document.getElementById("site-error");
+    let val = input.value.trim().toLowerCase();
+    try { val = new URL(val.includes("://") ? val : "https://" + val).hostname; } catch {}
+    error.textContent = "";
+    if (!val || !val.includes(".")) {
+      error.textContent = "Enter a valid domain";
+      return;
+    }
+    if (DEFAULT_SITES.includes(val)) {
+      error.textContent = `${val} is built-in`;
+      return;
+    }
+    load((_, userSites) => {
+      if (userSites.includes(val)) {
+        error.textContent = `${val} already added`;
+        return;
+      }
+      persistSites([...userSites, val], () => {
+        input.value = "";
+        renderSettings();
+      });
+    });
+  }
+
+  function removeSite(site) {
+    load((_, userSites) => {
+      persistSites(userSites.filter((s) => s !== site), renderSettings);
+    });
+  }
+
+  document.getElementById("add-site-btn").addEventListener("click", addSite);
+  document.getElementById("new-site-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") addSite();
   });
 
   // ── Nav ────────────────────────────────────────────────────────────────────
   function renderNav() {
     const chatList = document.getElementById("chat-list");
-
     const groups = {};
     allSnippets.forEach((s) => {
       if (!groups[s.url]) groups[s.url] = { chatName: s.chatName, count: 0 };
@@ -78,7 +132,6 @@
     chatList.querySelectorAll(".chat-item").forEach((el) => {
       el.addEventListener("click", () => {
         activeFilter = el.dataset.url === "all" ? null : el.dataset.url;
-        showView("snippets");
         renderNav();
         renderMain();
       });
@@ -99,6 +152,7 @@
         (s) =>
           s.snippet.toLowerCase().includes(q) ||
           s.chatName.toLowerCase().includes(q) ||
+          s.url.toLowerCase().includes(q) ||
           (s.notes && s.notes.toLowerCase().includes(q))
       );
     }
@@ -137,7 +191,7 @@
         <div class="snippet-text">${escHtml(s.snippet)}</div>
         ${s.notes
           ? `<div class="snippet-notes has-notes"><strong>Notes:</strong> ${escHtml(s.notes)}</div>`
-          : `<div class="snippet-notes">No notes — <span style="cursor:pointer;text-decoration:underline;color:var(--muted);" data-edit-id="${s.id}">add one</span></div>`
+          : ``
         }
         <div class="snippet-actions">
           <button class="btn-sm" data-copy-id="${s.id}">Copy</button>
@@ -186,77 +240,9 @@
     });
   }
 
-  // ── Settings view ──────────────────────────────────────────────────────────
-  function renderSettings() {
-    load((_, userSites) => {
-      const list = document.getElementById("sites-list");
-
-      const allSites = [
-        ...DEFAULT_SITES.map((s) => ({ name: s, isDefault: true })),
-        ...userSites.map((s) => ({ name: s, isDefault: false })),
-      ];
-
-      list.innerHTML = allSites.map((site) => `
-        <div class="site-row">
-          <span class="site-row-name">${escHtml(site.name)}</span>
-          ${site.isDefault
-            ? `<span class="site-badge">built-in</span>`
-            : `<button class="site-delete-btn" data-site="${escHtml(site.name)}">Remove</button>`
-          }
-        </div>
-      `).join("");
-
-      list.querySelectorAll("[data-site]").forEach((btn) => {
-        btn.addEventListener("click", () => removeSite(btn.dataset.site));
-      });
-    });
-  }
-
-  function addSite() {
-    const input = document.getElementById("new-site-input");
-    const error = document.getElementById("site-error");
-    let val = input.value.trim().toLowerCase();
-
-    // Strip protocol/path — just keep hostname
-    try { val = new URL(val.includes("://") ? val : "https://" + val).hostname; } catch {}
-
-    error.textContent = "";
-
-    if (!val || !val.includes(".")) {
-      error.textContent = "Enter a valid domain like gemini.google.com";
-      return;
-    }
-
-    if (DEFAULT_SITES.includes(val)) {
-      error.textContent = `${val} is already built-in.`;
-      return;
-    }
-
-    load((_, userSites) => {
-      if (userSites.includes(val)) {
-        error.textContent = `${val} is already added.`;
-        return;
-      }
-      persistSites([...userSites, val], () => {
-        input.value = "";
-        renderSettings();
-      });
-    });
-  }
-
-  function removeSite(site) {
-    load((_, userSites) => {
-      persistSites(userSites.filter((s) => s !== site), renderSettings);
-    });
-  }
-
-  document.getElementById("add-site-btn").addEventListener("click", addSite);
-  document.getElementById("new-site-input").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") addSite();
-  });
-
   // ── Snippet actions ────────────────────────────────────────────────────────
   function deleteSnippet(id) {
+    if (!confirm("Delete this snippet?")) return;
     persist(allSnippets.filter((s) => s.id !== id), refresh);
   }
 
@@ -286,6 +272,13 @@
     editingId = null;
   }
 
+  document.getElementById("modal-notes").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      document.getElementById("modal-save").click();
+    }
+  });
+
   document.getElementById("modal-cancel").addEventListener("click", closeModal);
   document.getElementById("modal-overlay").addEventListener("click", (e) => {
     if (e.target === document.getElementById("modal-overlay")) closeModal();
@@ -301,7 +294,6 @@
   // ── Search ─────────────────────────────────────────────────────────────────
   document.getElementById("search").addEventListener("input", (e) => {
     searchQuery = e.target.value;
-    showView("snippets");
     renderNav();
     renderMain();
   });

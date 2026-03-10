@@ -11,7 +11,6 @@
     <!-- Sidebar nav -->
     <aside class="nav">
       <div class="nav-logo">
-        <div class="logo-icon">S</div>
         <span>Snippets</span>
       </div>
       <div class="nav-search">
@@ -20,8 +19,14 @@
       <div id="chat-list" class="chat-list"></div>
 
       <div class="nav-export-group">
-        <button id="export-json-btn">JSON</button>
-        <button id="export-md-btn">Markdown</button>
+        <button id="export-json-btn" title="Download as JSON">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/></svg>
+          JSON
+        </button>
+        <button id="export-md-btn" title="Download as Markdown">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/></svg>
+          Markdown
+        </button>
       </div>
 
       <div class="nav-divider"></div>
@@ -31,10 +36,20 @@
           <span class="nav-footer-icon">⚙</span>
           Settings
         </button>
+        <!-- Inline settings panel — hidden by default -->
+        <div id="settings-panel" class="settings-panel hidden">
+          <div class="settings-panel-label">Active Sites</div>
+          <div id="sites-list"></div>
+          <div class="add-site-row">
+            <input id="new-site-input" type="text" placeholder="gemini.google.com" />
+            <button class="btn-add-site" id="add-site-btn">+</button>
+          </div>
+          <div class="settings-error" id="site-error"></div>
+        </div>
       </div>
     </aside>
 
-    <!-- Main content: snippets view -->
+    <!-- Main content: snippets view (always visible) -->
     <main class="main" id="view-snippets">
       <div class="main-header">
         <div>
@@ -43,27 +58,6 @@
         </div>
       </div>
       <div id="snippets-container"></div>
-    </main>
-
-    <!-- Settings view (hidden by default) -->
-    <main class="main hidden" id="view-settings">
-      <div class="main-header">
-        <div>
-          <h1>Settings</h1>
-          <p class="subtitle">Manage where Snippet Capture is active</p>
-        </div>
-      </div>
-      <div class="settings-view">
-        <div class="settings-section">
-          <div class="settings-section-title">Active Sites</div>
-          <div id="sites-list"></div>
-          <div class="add-site-row">
-            <input id="new-site-input" type="text" placeholder="e.g. gemini.google.com" />
-            <button class="btn-add" id="add-site-btn">Add Site</button>
-          </div>
-          <div class="settings-error" id="site-error"></div>
-        </div>
-      </div>
     </main>
   </div>
 

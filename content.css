@@ -28,6 +28,18 @@
   background: #C86A47;
 }
 
+/* ChatGPT theme — capture button: neutral dark to fit dark UI */
+#sc-capture-btn[data-site="chatgpt"] {
+  background: #3a3a3a;
+  color: #ececec;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#sc-capture-btn[data-site="chatgpt"]:hover {
+  background: #4a4a4a;
+}
+
 /* ── Toast ──────────────────────────────────────────────────────────────── */
 #sc-toast {
   position: fixed;
@@ -51,7 +63,7 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* ── Sidebar pull-tab — anchored where the header sits ─────────────────── */
+/* ── Sidebar pull-tab ───────────────────────────────────────────────────── */
 #sc-sidebar-tab {
   position: fixed;
   top: 80px;
@@ -79,6 +91,18 @@
 #sc-sidebar-tab:hover {
   background: #E5DDD3;
   color: #1A1917;
+}
+
+/* ChatGPT theme — pull-tab */
+#sc-sidebar-tab[data-site="chatgpt"] {
+  background: #2f2f2f;
+  color: #ababab;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+#sc-sidebar-tab[data-site="chatgpt"]:hover {
+  background: #3a3a3a;
+  color: #ececec;
 }
 
 /* ── Sidebar ────────────────────────────────────────────────────────────── */
@@ -198,4 +222,196 @@
 .sc-delete-btn:hover {
   color: #B04A30;
   background: #FEF0EC;
+}
+
+/* ── Add note section ───────────────────────────────────────────────────── */
+#sc-add-section {
+  flex-shrink: 0;
+  border-top: 1px solid #E5DDD3;
+  padding: 6px 8px 8px;
+}
+
+#sc-add-toggle {
+  background: transparent;
+  border: none;
+  color: #A89F99;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 4px;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  width: 100%;
+  text-align: left;
+}
+
+#sc-add-toggle:hover {
+  color: #1A1917;
+  background: rgba(26,25,23,0.05);
+}
+
+#sc-add-form {
+  margin-top: 6px;
+}
+
+#sc-add-form.sc-add-hidden {
+  display: none;
+}
+
+#sc-add-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #E5DDD3;
+  border-radius: 6px;
+  background: #fff;
+  color: #1A1917;
+  font-size: 12px;
+  font-family: inherit;
+  line-height: 1.5;
+  padding: 7px 9px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+#sc-add-textarea:focus {
+  border-color: #D97757;
+}
+
+#sc-add-textarea::placeholder {
+  color: #C8C0B8;
+}
+
+#sc-add-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+#sc-add-cancel {
+  background: transparent;
+  border: 1px solid #E5DDD3;
+  color: #A89F99;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+#sc-add-cancel:hover {
+  color: #1A1917;
+  border-color: #C8C0B8;
+}
+
+#sc-add-save {
+  background: #D97757;
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+#sc-add-save:hover {
+  background: #C86A47;
+}
+
+/* ── ChatGPT theme — sidebar ────────────────────────────────────────────── */
+#sc-sidebar[data-site="chatgpt"] {
+  background: #2f2f2f;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-sidebar-header {
+  background: #212121;
+  color: #ececec;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-sidebar-actions button {
+  color: #888;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-sidebar-actions button:hover {
+  color: #ececec;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-empty {
+  color: #666;
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-item {
+  background: #3a3a3a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-item-text {
+  color: #ececec;
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-item-meta {
+  color: #888;
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-delete-btn {
+  color: #555;
+}
+
+#sc-sidebar[data-site="chatgpt"] .sc-delete-btn:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-section {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-toggle {
+  color: #666;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-toggle:hover {
+  color: #ececec;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-textarea {
+  background: #3a3a3a;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ececec;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-textarea:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-textarea::placeholder {
+  color: #555;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-cancel {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #888;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-cancel:hover {
+  color: #ececec;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-save {
+  background: #3a3a3a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ececec;
+}
+
+#sc-sidebar[data-site="chatgpt"] #sc-add-save:hover {
+  background: #4a4a4a;
 }

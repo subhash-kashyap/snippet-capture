@@ -1,4 +1,8 @@
 (() => {
+  // ── Site detection ─────────────────────────────────────────────────────────
+  const isChatGPT = location.hostname.includes("chatgpt.com");
+  const SITE = isChatGPT ? "chatgpt" : "claude";
+
   // ── State ──────────────────────────────────────────────────────────────────
   let captureBtn = null;
   let sidebar = null;
@@ -34,10 +38,11 @@
   }
 
   // ── Capture Button ─────────────────────────────────────────────────────────
-  function showCaptureBtn(x, y) {
+  function showCaptureBtn(x, bottomY) {
     if (!captureBtn) {
       captureBtn = document.createElement("button");
       captureBtn.id = "sc-capture-btn";
+      captureBtn.dataset.site = SITE;
       captureBtn.textContent = "Capture Snippet";
       captureBtn.addEventListener("mousedown", (e) => {
         e.preventDefault();
@@ -47,11 +52,13 @@
       document.body.appendChild(captureBtn);
     }
 
-    // Position just above the cursor, clamped to viewport
+    // Appear BELOW the selection so we don't clash with platform reply buttons
+    // that appear above selected text on ChatGPT / Claude
     const btnW = 150;
     const btnH = 36;
-    let left = Math.min(x, window.innerWidth - btnW - 12);
-    let top = Math.max(y - btnH - 8, 8);
+    let left = Math.min(x - btnW / 2, window.innerWidth - btnW - 12);
+    left = Math.max(left, 8);
+    let top = Math.min(bottomY + 8, window.innerHeight - btnH - 8);
 
     captureBtn.style.left = left + window.scrollX + "px";
     captureBtn.style.top = top + window.scrollY + "px";
@@ -98,7 +105,11 @@
 
   // ── Selection listener ─────────────────────────────────────────────────────
   document.addEventListener("mouseup", (e) => {
-    // small delay so selection is settled
+    // Capture mouse coords before the timeout — fallback when
+    // getBoundingClientRect() returns zeros (e.g. inside code blocks)
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
     setTimeout(() => {
       const sel = window.getSelection();
       const text = sel ? sel.toString().trim() : "";
@@ -106,10 +117,10 @@
         currentSelection = text;
         const range = sel.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-        showCaptureBtn(
-          rect.left + rect.width / 2,
-          rect.top
-        );
+        // Fall back to mouse coords when rect is invalid
+        const x = rect.width > 0 ? rect.left + rect.width / 2 : mouseX;
+        const bottomY = rect.height > 0 ? rect.bottom : mouseY;
+        showCaptureBtn(x, bottomY);
       } else {
         hideCaptureBtn();
       }
@@ -128,6 +139,7 @@
 
     sidebar = document.createElement("div");
     sidebar.id = "sc-sidebar";
+    sidebar.dataset.site = SITE;
     sidebar.innerHTML = `
       <div id="sc-sidebar-header">
         <span>Snippets</span>
@@ -137,12 +149,23 @@
         </div>
       </div>
       <div id="sc-sidebar-body"></div>
+      <div id="sc-add-section">
+        <button id="sc-add-toggle" title="Add a note or snippet manually">&#43; Add note</button>
+        <div id="sc-add-form" class="sc-add-hidden">
+          <textarea id="sc-add-textarea" placeholder="Type a note or paste text…" rows="4"></textarea>
+          <div id="sc-add-actions">
+            <button id="sc-add-cancel">Cancel</button>
+            <button id="sc-add-save">Save</button>
+          </div>
+        </div>
+      </div>
     `;
     document.body.appendChild(sidebar);
 
     // Persistent pull-tab that stays visible on the edge when collapsed
     const tab = document.createElement("button");
     tab.id = "sc-sidebar-tab";
+    tab.dataset.site = SITE;
     tab.title = "Open snippets";
     tab.innerHTML = "&#10095;";
     document.body.appendChild(tab);
@@ -151,6 +174,46 @@
     document.getElementById("sc-sidebar-toggle").addEventListener("click", toggleSidebar);
     document.getElementById("sc-open-page").addEventListener("click", () => {
       chrome.runtime.sendMessage({ type: "OPEN_SNIPPETS_PAGE" });
+    });
+
+    // Add note toggle
+    document.getElementById("sc-add-toggle").addEventListener("click", () => {
+      const form = document.getElementById("sc-add-form");
+      const isHidden = form.classList.contains("sc-add-hidden");
+      form.classList.toggle("sc-add-hidden", !isHidden);
+      if (isHidden) {
+        document.getElementById("sc-add-textarea").focus();
+        document.getElementById("sc-add-toggle").textContent = "✕ Cancel";
+      } else {
+        document.getElementById("sc-add-toggle").textContent = "+ Add note";
+        document.getElementById("sc-add-textarea").value = "";
+      }
+    });
+
+    document.getElementById("sc-add-cancel").addEventListener("click", () => {
+      document.getElementById("sc-add-form").classList.add("sc-add-hidden");
+      document.getElementById("sc-add-toggle").textContent = "+ Add note";
+      document.getElementById("sc-add-textarea").value = "";
+    });
+
+    document.getElementById("sc-add-save").addEventListener("click", () => {
+      const text = document.getElementById("sc-add-textarea").value.trim();
+      if (!text) return;
+      const snippet = {
+        id: uid(),
+        url: getCurrentUrl(),
+        chatName: getChatName(),
+        snippet: text,
+        timestamp: Date.now(),
+        notes: "",
+      };
+      saveSnippet(snippet, () => {
+        document.getElementById("sc-add-form").classList.add("sc-add-hidden");
+        document.getElementById("sc-add-toggle").textContent = "+ Add note";
+        document.getElementById("sc-add-textarea").value = "";
+        flashConfirmation();
+        refreshSidebar();
+      });
     });
 
     refreshSidebar();

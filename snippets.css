@@ -54,18 +54,6 @@ body {
   letter-spacing: -0.01em;
 }
 
-.logo-icon {
-  width: 26px;
-  height: 26px;
-  background: var(--accent);
-  color: #fff;
-  border-radius: 6px;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
 
 .nav-search {
   padding: 10px 10px 6px;
@@ -293,7 +281,6 @@ body {
   padding: 10px 12px;
   white-space: pre-wrap;
   word-break: break-word;
-  border-left: 2px solid var(--accent);
 }
 
 .snippet-notes {
@@ -354,65 +341,53 @@ body {
   background: var(--accent-soft);
 }
 
-/* ── Settings view ── */
-.settings-view {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 32px;
-}
-
-.settings-view h2 {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-bottom: 4px;
-}
-
-.settings-view .settings-desc {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.settings-section {
+/* ── Inline settings panel ── */
+.settings-panel {
+  margin: 6px 6px 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 18px;
-  margin-bottom: 16px;
+  border-radius: 8px;
+  padding: 10px 11px 11px;
 }
 
-.settings-section-title {
-  font-size: 12px;
+.settings-panel.hidden { display: none; }
+
+.settings-panel-label {
+  font-size: 10px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--dim);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
 }
 
 .site-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--bg);
-  font-size: 13px;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: 12px;
   color: var(--text);
+  border-bottom: 1px solid var(--bg);
 }
 
 .site-row:last-child { border-bottom: none; }
 
-.site-row-name { flex: 1; }
+.site-row-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .site-badge {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--dim);
   background: var(--bg);
-  padding: 1px 7px;
-  border-radius: 5px;
+  padding: 1px 5px;
+  border-radius: 4px;
   border: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .site-delete-btn {
@@ -420,56 +395,59 @@ body {
   border: none;
   color: var(--dim);
   cursor: pointer;
-  font-size: 13px;
-  padding: 2px 6px;
-  border-radius: 5px;
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 4px;
   font-family: inherit;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .site-delete-btn:hover { color: #B04A30; background: #FEF0EC; }
 
 .add-site-row {
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 5px;
+  margin-top: 8px;
 }
 
 .add-site-row input {
   flex: 1;
-  padding: 8px 11px;
+  padding: 5px 8px;
   border: 1px solid var(--border);
-  border-radius: 7px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 12px;
   outline: none;
   background: var(--bg);
   color: var(--text);
   font-family: inherit;
+  min-width: 0;
 }
 
 .add-site-row input:focus { border-color: var(--accent); background: #fff; }
 .add-site-row input::placeholder { color: var(--dim); }
 
-.btn-add {
-  padding: 8px 16px;
+.btn-add-site {
+  padding: 5px 10px;
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 7px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
-  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
-.btn-add:hover { background: var(--accent-hover); }
-.btn-add:disabled { opacity: 0.45; cursor: default; }
+.btn-add-site:hover { background: var(--accent-hover); }
 
 .settings-error {
-  font-size: 12px;
+  font-size: 11px;
   color: #B04A30;
-  margin-top: 8px;
-  min-height: 16px;
+  margin-top: 5px;
+  min-height: 14px;
 }
 
 /* ── Modal ── */
@@ -510,7 +488,6 @@ body {
   margin-bottom: 12px;
   max-height: 80px;
   overflow: hidden;
-  border-left: 2px solid var(--accent);
   line-height: 1.5;
 }
 
