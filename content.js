@@ -302,8 +302,22 @@
     });
   }
 
+  // ── Theme detection ────────────────────────────────────────────────────────
+  function isDarkMode() {
+    return isChatGPT && document.documentElement.classList.contains("dark");
+  }
+
+  function applyTheme() {
+    const theme = isDarkMode() ? "dark" : "light";
+    if (sidebar) sidebar.dataset.theme = theme;
+    if (captureBtn) captureBtn.dataset.theme = theme;
+    const tab = document.getElementById("sc-sidebar-tab");
+    if (tab) tab.dataset.theme = theme;
+  }
+
   // ── Init ───────────────────────────────────────────────────────────────────
   buildSidebar();
+  applyTheme();
 
   // Re-check when URL changes (SPAs)
   let lastUrl = location.href;
@@ -313,4 +327,10 @@
       refreshSidebar();
     }
   }).observe(document.body, { subtree: true, childList: true });
+
+  // Watch for ChatGPT theme changes (dark/light toggle)
+  new MutationObserver(applyTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
 })();

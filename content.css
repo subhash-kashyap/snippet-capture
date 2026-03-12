@@ -29,14 +29,14 @@
 }
 
 /* ChatGPT theme — capture button: neutral dark to fit dark UI */
-#sc-capture-btn[data-site="chatgpt"] {
+#sc-capture-btn[data-theme="dark"] {
   background: #3a3a3a;
   color: #ececec;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-#sc-capture-btn[data-site="chatgpt"]:hover {
+#sc-capture-btn[data-theme="dark"]:hover {
   background: #4a4a4a;
 }
 
@@ -94,13 +94,13 @@
 }
 
 /* ChatGPT theme — pull-tab */
-#sc-sidebar-tab[data-site="chatgpt"] {
+#sc-sidebar-tab[data-theme="dark"] {
   background: #2f2f2f;
   color: #ababab;
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-#sc-sidebar-tab[data-site="chatgpt"]:hover {
+#sc-sidebar-tab[data-theme="dark"]:hover {
   background: #3a3a3a;
   color: #ececec;
 }
@@ -345,105 +345,105 @@
 }
 
 /* ── ChatGPT theme — sidebar ────────────────────────────────────────────── */
-#sc-sidebar[data-site="chatgpt"] {
+#sc-sidebar[data-theme="dark"] {
   background: #2f2f2f;
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-sidebar-header {
+#sc-sidebar[data-theme="dark"] #sc-sidebar-header {
   background: #212121;
   color: #ececec;
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-sidebar-actions button {
+#sc-sidebar[data-theme="dark"] #sc-sidebar-actions button {
   color: #888;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-sidebar-actions button:hover {
+#sc-sidebar[data-theme="dark"] #sc-sidebar-actions button:hover {
   color: #ececec;
   background: rgba(255, 255, 255, 0.08);
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-empty {
+#sc-sidebar[data-theme="dark"] .sc-empty {
   color: #666;
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-item {
+#sc-sidebar[data-theme="dark"] .sc-item {
   background: #3a3a3a;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-item-text {
+#sc-sidebar[data-theme="dark"] .sc-item-text {
   color: #ececec;
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-item-meta {
+#sc-sidebar[data-theme="dark"] .sc-item-meta {
   color: #888;
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-copy-btn {
+#sc-sidebar[data-theme="dark"] .sc-copy-btn {
   color: #666;
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-copy-btn:hover {
+#sc-sidebar[data-theme="dark"] .sc-copy-btn:hover {
   color: #ececec;
   background: rgba(255, 255, 255, 0.08);
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-delete-btn {
+#sc-sidebar[data-theme="dark"] .sc-delete-btn {
   color: #555;
 }
 
-#sc-sidebar[data-site="chatgpt"] .sc-delete-btn:hover {
+#sc-sidebar[data-theme="dark"] .sc-delete-btn:hover {
   color: #ff6b6b;
   background: rgba(255, 107, 107, 0.1);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-section {
+#sc-sidebar[data-theme="dark"] #sc-add-section {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-toggle {
+#sc-sidebar[data-theme="dark"] #sc-add-toggle {
   color: #666;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-toggle:hover {
+#sc-sidebar[data-theme="dark"] #sc-add-toggle:hover {
   color: #ececec;
   background: rgba(255, 255, 255, 0.05);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-textarea {
+#sc-sidebar[data-theme="dark"] #sc-add-textarea {
   background: #3a3a3a;
   border-color: rgba(255, 255, 255, 0.12);
   color: #ececec;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-textarea:focus {
+#sc-sidebar[data-theme="dark"] #sc-add-textarea:focus {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-textarea::placeholder {
+#sc-sidebar[data-theme="dark"] #sc-add-textarea::placeholder {
   color: #555;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-cancel {
+#sc-sidebar[data-theme="dark"] #sc-add-cancel {
   border-color: rgba(255, 255, 255, 0.12);
   color: #888;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-cancel:hover {
+#sc-sidebar[data-theme="dark"] #sc-add-cancel:hover {
   color: #ececec;
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-save {
+#sc-sidebar[data-theme="dark"] #sc-add-save {
   background: #3a3a3a;
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ececec;
 }
 
-#sc-sidebar[data-site="chatgpt"] #sc-add-save:hover {
+#sc-sidebar[data-theme="dark"] #sc-add-save:hover {
   background: #4a4a4a;
 }
