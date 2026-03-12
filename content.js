@@ -91,10 +91,10 @@
     window.getSelection()?.removeAllRanges();
   }
 
-  function flashConfirmation() {
+  function flashConfirmation(msg = "Snippet captured!") {
     const toast = document.createElement("div");
     toast.id = "sc-toast";
-    toast.textContent = "Snippet captured!";
+    toast.textContent = msg;
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.classList.add("sc-toast-show"));
     setTimeout(() => {
@@ -144,6 +144,7 @@
       <div id="sc-sidebar-header">
         <span>Snippets</span>
         <div id="sc-sidebar-actions">
+          <button id="sc-copy-all" title="Copy all snippets">&#10697;</button>
           <button id="sc-open-page" title="Open full page">&#8599;</button>
           <button id="sc-sidebar-toggle" title="Collapse">&#10094;</button>
         </div>
@@ -174,6 +175,15 @@
     document.getElementById("sc-sidebar-toggle").addEventListener("click", toggleSidebar);
     document.getElementById("sc-open-page").addEventListener("click", () => {
       chrome.runtime.sendMessage({ type: "OPEN_SNIPPETS_PAGE" });
+    });
+    document.getElementById("sc-copy-all").addEventListener("click", () => {
+      const currentUrl = getCurrentUrl();
+      loadSnippets((all) => {
+        const mine = all.filter((s) => s.url === currentUrl);
+        if (!mine.length) return;
+        const text = mine.map((s) => s.snippet).join("\n\n---\n\n");
+        navigator.clipboard.writeText(text).then(() => flashConfirmation("All snippets copied!"));
+      });
     });
 
     // Add note toggle
@@ -243,11 +253,22 @@
         <div class="sc-item" data-id="${s.id}">
           <div class="sc-item-text">${escapeHtml(s.snippet)}</div>
           <div class="sc-item-meta">${formatDate(s.timestamp)}</div>
-          <button class="sc-delete-btn" data-id="${s.id}" title="Delete">✕</button>
+          <div class="sc-item-btns">
+            <button class="sc-copy-btn" data-id="${s.id}" title="Copy">&#10697;</button>
+            <button class="sc-delete-btn" data-id="${s.id}" title="Delete">✕</button>
+          </div>
         </div>
       `
         )
         .join("");
+
+      body.querySelectorAll(".sc-copy-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const item = mine.find((s) => s.id === btn.dataset.id);
+          if (item) navigator.clipboard.writeText(item.snippet).then(() => flashConfirmation("Copied!"));
+        });
+      });
 
       body.querySelectorAll(".sc-delete-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
